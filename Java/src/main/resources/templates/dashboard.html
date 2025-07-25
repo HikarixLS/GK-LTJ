@@ -27,7 +27,7 @@
                         <div class="card-body">
                             <div class="d-flex justify-content-between">
                                 <div>
-                                    <h4 class="mb-0">156</h4>
+                                    <h4 class="mb-0" th:text="${totalStudents ?: 0}">0</h4>
                                     <small>Sinh viên</small>
                                 </div>
                                 <div class="align-self-center">
@@ -51,16 +51,64 @@
                         <div class="card-body">
                             <div class="d-flex justify-content-between">
                                 <div>
-                                    <h4 class="mb-0">248</h4>
-                                    <small>Sản phẩm</small>
+                                    <h4 class="mb-0" th:text="${totalBooks ?: 0}">0</h4>
+                                    <small>Tổng số sách</small>
                                 </div>
                                 <div class="align-self-center">
-                                    <i class="fas fa-shopping-bag fa-2x"></i>
+                                    <i class="fas fa-book fa-2x"></i>
                                 </div>
                             </div>
                         </div>
                         <div class="card-footer d-flex align-items-center justify-content-between">
-                            <a class="small text-white stretched-link" href="/products" th:href="@{/products}">
+                            <a class="small text-white stretched-link" href="/books" th:href="@{/books}">
+                                Xem chi tiết
+                            </a>
+                            <div class="small text-white">
+                                <i class="fas fa-angle-right"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-3 col-md-6">
+                    <div class="card bg-info text-white">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <h4 class="mb-0" th:text="${availableBooks ?: 0}">0</h4>
+                                    <small>Sách có sẵn</small>
+                                </div>
+                                <div class="align-self-center">
+                                    <i class="fas fa-book-open fa-2x"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer d-flex align-items-center justify-content-between">
+                            <a class="small text-white stretched-link" href="/books?status=AVAILABLE" th:href="@{/books(status='AVAILABLE')}">
+                                Xem chi tiết
+                            </a>
+                            <div class="small text-white">
+                                <i class="fas fa-angle-right"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-3 col-md-6">
+                    <div class="card bg-warning text-white">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <h4 class="mb-0" th:text="${borrowedBooks ?: 0}">0</h4>
+                                    <small>Sách đang mượn</small>
+                                </div>
+                                <div class="align-self-center">
+                                    <i class="fas fa-hand-holding fa-2x"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer d-flex align-items-center justify-content-between">
+                            <a class="small text-white stretched-link" href="/books?status=BORROWED" th:href="@{/books(status='BORROWED')}">
                                 Xem chi tiết
                             </a>
                             <div class="small text-white">
@@ -94,25 +142,71 @@
                     </div>
                 </div>
 
-                <div class="col-xl-3 col-md-6">
-                    <div class="card bg-info text-white">
+            </div>
+
+            <!-- Latest and Popular Books -->
+            <div class="row mb-4">
+                <!-- Latest Books -->
+                <div class="col-md-6 mb-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0">
+                                <i class="fas fa-star me-2"></i>
+                                Sách mới nhất
+                            </h5>
+                        </div>
                         <div class="card-body">
-                            <div class="d-flex justify-content-between">
-                                <div>
-                                    <h4 class="mb-0">1,024</h4>
-                                    <small>Sách</small>
+                            <div th:if="${latestBooks != null and !latestBooks.empty}">
+                                <div class="list-group list-group-flush">
+                                    <div th:each="book : ${latestBooks}" class="list-group-item d-flex justify-content-between align-items-start">
+                                        <div class="ms-2 me-auto">
+                                            <div class="fw-bold" th:text="${book.title}">Tên sách</div>
+                                            <small class="text-muted" th:text="${book.author}">Tác giả</small>
+                                        </div>
+                                        <span class="badge bg-primary rounded-pill" th:text="${#numbers.formatCurrency(book.price)}">0₫</span>
+                                    </div>
                                 </div>
-                                <div class="align-self-center">
-                                    <i class="fas fa-book fa-2x"></i>
+                                <div class="text-center mt-3">
+                                    <a th:href="@{/books}" class="btn btn-primary btn-sm">
+                                        <i class="fas fa-eye me-1"></i>Xem tất cả
+                                    </a>
                                 </div>
                             </div>
+                            <div th:unless="${latestBooks != null and !latestBooks.empty}" class="text-center text-muted">
+                                <p>Chưa có sách nào</p>
+                            </div>
                         </div>
-                        <div class="card-footer d-flex align-items-center justify-content-between">
-                            <a class="small text-white stretched-link" href="/books" th:href="@{/books}">
-                                Xem chi tiết
-                            </a>
-                            <div class="small text-white">
-                                <i class="fas fa-angle-right"></i>
+                    </div>
+                </div>
+
+                <!-- Popular Books -->
+                <div class="col-md-6 mb-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0">
+                                <i class="fas fa-fire me-2"></i>
+                                Sách phổ biến
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div th:if="${popularBooks != null and !popularBooks.empty}">
+                                <div class="list-group list-group-flush">
+                                    <div th:each="book : ${popularBooks}" class="list-group-item d-flex justify-content-between align-items-start">
+                                        <div class="ms-2 me-auto">
+                                            <div class="fw-bold" th:text="${book.title}">Tên sách</div>
+                                            <small class="text-muted" th:text="${book.author}">Tác giả</small>
+                                        </div>
+                                        <span class="badge bg-success rounded-pill" th:text="${book.viewCount ?: 0} + ' views'">0 views</span>
+                                    </div>
+                                </div>
+                                <div class="text-center mt-3">
+                                    <a th:href="@{/books}" class="btn btn-success btn-sm">
+                                        <i class="fas fa-eye me-1"></i>Xem tất cả
+                                    </a>
+                                </div>
+                            </div>
+                            <div th:unless="${popularBooks != null and !popularBooks.empty}" class="text-center text-muted">
+                                <p>Chưa có dữ liệu</p>
                             </div>
                         </div>
                     </div>
@@ -152,8 +246,13 @@
                                     </a>
                                 </div>
                                 <div class="col-lg-3 col-md-6">
-                                    <a href="/books/create" th:href="@{/books/create}" 
-                                       class="btn btn-outline-info w-100 p-3">
+                                    <a href="/books/add" th:href="@{/books/add}" 
+                                       class="btn btn-outline-info w-100 p-3"
+                                       sec:authorize="hasRole('ADMIN') or hasRole('MANAGER')">
+                                        <i class="fas fa-book-medical fa-2x d-block mb-2"></i>
+                                        Thêm sách mới
+                                    </a>
+                                </div>
                                         <i class="fas fa-book-open fa-2x d-block mb-2"></i>
                                         Thêm sách mới
                                     </a>

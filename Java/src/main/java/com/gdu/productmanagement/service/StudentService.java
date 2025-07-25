@@ -143,6 +143,11 @@ public class StudentService {
     }
 
     @Transactional(readOnly = true)
+    public long countAllStudents() {
+        return studentRepository.count();
+    }
+
+    @Transactional(readOnly = true)
     public List<Object[]> getStudentStatsByClass() {
         return studentRepository.countStudentsByClass();
     }

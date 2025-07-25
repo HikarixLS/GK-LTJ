@@ -84,6 +84,13 @@ public class Book {
     @Column(name = "review_count")
     private Integer reviewCount = 0;
 
+    @Min(value = 0, message = "Số lượt xem không được âm")
+    @Column(name = "view_count")
+    private Integer viewCount = 0;
+
+    @Column(name = "quantity")
+    private Integer quantity = 0;
+
     @CreationTimestamp
     @Column(name = "created_at")
     private LocalDateTime createdAt;
@@ -146,6 +153,7 @@ public class Book {
     public enum BookStatus {
         AVAILABLE("Có sẵn"),
         OUT_OF_STOCK("Hết hàng"),
+        BORROWED("Đang mượn"),
         DISCONTINUED("Ngừng xuất bản"),
         COMING_SOON("Sắp ra mắt");
 

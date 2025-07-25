@@ -163,6 +163,11 @@ public class ProductService {
     }
 
     @Transactional(readOnly = true)
+    public long countAllProducts() {
+        return productRepository.count();
+    }
+
+    @Transactional(readOnly = true)
     public List<Object[]> getProductStatsByCategory() {
         return productRepository.countProductsByCategory();
     }
