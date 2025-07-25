@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org" 
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/base}">
+<head>
+    <title>Dashboard - Hệ thống quản lý sản phẩm</title>
+</head>
+<body>
+    <div layout:fragment="content">
+        <div class="container-fluid py-4">
+            <div class="row">
+                <div class="col-12">
+                    <h1 class="h3 mb-3">
+                        <i class="fas fa-tachometer-alt me-2"></i>Dashboard
+                    </h1>
+                    <p class="text-muted">
+                        Xin chào <strong sec:authentication="name">User</strong>! 
+                        Chào mừng bạn đến với hệ thống quản lý sản phẩm.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Statistics Cards -->
+            <div class="row g-3 mb-4">
+                <div class="col-xl-3 col-md-6">
+                    <div class="card bg-primary text-white">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <h4 class="mb-0">156</h4>
+                                    <small>Sinh viên</small>
+                                </div>
+                                <div class="align-self-center">
+                                    <i class="fas fa-user-graduate fa-2x"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer d-flex align-items-center justify-content-between">
+                            <a class="small text-white stretched-link" href="/students" th:href="@{/students}">
+                                Xem chi tiết
+                            </a>
+                            <div class="small text-white">
+                                <i class="fas fa-angle-right"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-3 col-md-6">
+                    <div class="card bg-success text-white">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <h4 class="mb-0">248</h4>
+                                    <small>Sản phẩm</small>
+                                </div>
+                                <div class="align-self-center">
+                                    <i class="fas fa-shopping-bag fa-2x"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer d-flex align-items-center justify-content-between">
+                            <a class="small text-white stretched-link" href="/products" th:href="@{/products}">
+                                Xem chi tiết
+                            </a>
+                            <div class="small text-white">
+                                <i class="fas fa-angle-right"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-3 col-md-6">
+                    <div class="card bg-warning text-white">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <h4 class="mb-0">12</h4>
+                                    <small>Cửa hàng</small>
+                                </div>
+                                <div class="align-self-center">
+                                    <i class="fas fa-store fa-2x"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer d-flex align-items-center justify-content-between">
+                            <a class="small text-white stretched-link" href="/stores" th:href="@{/stores}">
+                                Xem chi tiết
+                            </a>
+                            <div class="small text-white">
+                                <i class="fas fa-angle-right"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-3 col-md-6">
+                    <div class="card bg-info text-white">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <h4 class="mb-0">1,024</h4>
+                                    <small>Sách</small>
+                                </div>
+                                <div class="align-self-center">
+                                    <i class="fas fa-book fa-2x"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer d-flex align-items-center justify-content-between">
+                            <a class="small text-white stretched-link" href="/books" th:href="@{/books}">
+                                Xem chi tiết
+                            </a>
+                            <div class="small text-white">
+                                <i class="fas fa-angle-right"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="row g-3 mb-4">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">
+                                <i class="fas fa-rocket me-2"></i>Thao tác nhanh
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row g-3">
+                                <div class="col-lg-3 col-md-6">
+                                    <a href="/students/create" th:href="@{/students/create}" 
+                                       class="btn btn-outline-primary w-100 p-3">
+                                        <i class="fas fa-user-plus fa-2x d-block mb-2"></i>
+                                        Thêm sinh viên mới
+                                    </a>
+                                </div>
+                                <div class="col-lg-3 col-md-6">
+                                    <a href="/products/create" th:href="@{/products/create}" 
+                                       class="btn btn-outline-success w-100 p-3">
+                                        <i class="fas fa-plus-circle fa-2x d-block mb-2"></i>
+                                        Thêm sản phẩm mới
+                                    </a>
+                                </div>
+                                <div class="col-lg-3 col-md-6">
+                                    <a href="/stores/create" th:href="@{/stores/create}" 
+                                       class="btn btn-outline-warning w-100 p-3">
+                                        <i class="fas fa-store-alt fa-2x d-block mb-2"></i>
+                                        Thêm cửa hàng mới
+                                    </a>
+                                </div>
+                                <div class="col-lg-3 col-md-6">
+                                    <a href="/books/create" th:href="@{/books/create}" 
+                                       class="btn btn-outline-info w-100 p-3">
+                                        <i class="fas fa-book-open fa-2x d-block mb-2"></i>
+                                        Thêm sách mới
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Activities -->
+            <div class="row g-3">
+                <div class="col-lg-8">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">
+                                <i class="fas fa-history me-2"></i>Hoạt động gần đây
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="timeline">
+                                <div class="timeline-item">
+                                    <div class="timeline-marker bg-primary"></div>
+                                    <div class="timeline-content">
+                                        <h6 class="timeline-title">Sinh viên mới được thêm</h6>
+                                        <p class="timeline-text">Nguyễn Văn A (SV001) đã được thêm vào hệ thống</p>
+                                        <small class="text-muted">5 phút trước</small>
+                                    </div>
+                                </div>
+                                <div class="timeline-item">
+                                    <div class="timeline-marker bg-success"></div>
+                                    <div class="timeline-content">
+                                        <h6 class="timeline-title">Sản phẩm được cập nhật</h6>
+                                        <p class="timeline-text">Laptop Dell Inspiron 15 - Cập nhật giá và số lượng</p>
+                                        <small class="text-muted">15 phút trước</small>
+                                    </div>
+                                </div>
+                                <div class="timeline-item">
+                                    <div class="timeline-marker bg-warning"></div>
+                                    <div class="timeline-content">
+                                        <h6 class="timeline-title">Cửa hàng mới</h6>
+                                        <p class="timeline-text">Cửa hàng điện tử ABC đã được thêm</p>
+                                        <small class="text-muted">1 giờ trước</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">
+                                <i class="fas fa-chart-pie me-2"></i>Thống kê nhanh
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <span>Sinh viên hoạt động</span>
+                                <span class="badge bg-primary">95%</span>
+                            </div>
+                            <div class="progress mb-3">
+                                <div class="progress-bar bg-primary" style="width: 95%"></div>
+                            </div>
+
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <span>Sản phẩm còn hàng</span>
+                                <span class="badge bg-success">88%</span>
+                            </div>
+                            <div class="progress mb-3">
+                                <div class="progress-bar bg-success" style="width: 88%"></div>
+                            </div>
+
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <span>Cửa hàng hoạt động</span>
+                                <span class="badge bg-warning">92%</span>
+                            </div>
+                            <div class="progress mb-3">
+                                <div class="progress-bar bg-warning" style="width: 92%"></div>
+                            </div>
+
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span>Sách có sẵn</span>
+                                <span class="badge bg-info">97%</span>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar bg-info" style="width: 97%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style layout:fragment="css">
+        .timeline {
+            position: relative;
+            padding-left: 2rem;
+        }
+        .timeline-item {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+        .timeline-item:before {
+            content: '';
+            position: absolute;
+            left: -1.5rem;
+            top: 0.5rem;
+            width: 2px;
+            height: calc(100% + 1rem);
+            background-color: #dee2e6;
+        }
+        .timeline-item:last-child:before {
+            display: none;
+        }
+        .timeline-marker {
+            position: absolute;
+            left: -1.75rem;
+            top: 0.25rem;
+            width: 0.75rem;
+            height: 0.75rem;
+            border-radius: 50%;
+        }
+        .timeline-content {
+            margin-left: 0.5rem;
+        }
+        .timeline-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+        .timeline-text {
+            font-size: 0.85rem;
+            margin-bottom: 0.25rem;
+        }
+    </style>
+</body>
+</html>

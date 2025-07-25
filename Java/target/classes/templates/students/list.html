@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org" 
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/base}">
+<head>
+    <title>Danh sách sinh viên - Hệ thống quản lý sản phẩm</title>
+</head>
+<body>
+    <div layout:fragment="content">
+        <div class="container-fluid py-4">
+            <!-- Header -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <div>
+                            <h1 class="h3 mb-1">
+                                <i class="fas fa-user-graduate me-2"></i>Quản lý sinh viên
+                            </h1>
+                            <p class="text-muted mb-0">Danh sách tất cả sinh viên trong hệ thống</p>
+                        </div>
+                        <a href="/students/create" th:href="@{/students/create}" 
+                           class="btn btn-primary">
+                            <i class="fas fa-plus me-1"></i>Thêm sinh viên mới
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Search and Filter -->
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <form method="get" th:action="@{/students}">
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label for="search" class="form-label">Tìm kiếm</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-search"></i>
+                                            </span>
+                                            <input type="text" 
+                                                   class="form-control" 
+                                                   id="search" 
+                                                   name="search"
+                                                   th:value="${search}"
+                                                   placeholder="Tìm theo tên, mã SV, email...">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label for="sortBy" class="form-label">Sắp xếp theo</label>
+                                        <select class="form-select" id="sortBy" name="sortBy">
+                                            <option value="id" th:selected="${sortBy == 'id'}">ID</option>
+                                            <option value="studentCode" th:selected="${sortBy == 'studentCode'}">Mã sinh viên</option>
+                                            <option value="fullName" th:selected="${sortBy == 'fullName'}">Họ tên</option>
+                                            <option value="className" th:selected="${sortBy == 'className'}">Lớp</option>
+                                            <option value="gpa" th:selected="${sortBy == 'gpa'}">GPA</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label class="form-label">&nbsp;</label>
+                                        <div class="d-grid">
+                                            <button type="submit" class="btn btn-outline-primary">
+                                                <i class="fas fa-filter me-1"></i>Lọc
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Students Table -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">
+                                Danh sách sinh viên 
+                                <span class="badge bg-primary ms-2" th:text="${totalElements}">0</span>
+                            </h5>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="table-responsive">
+                                <table class="table table-hover mb-0">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>
+                                                <a th:href="@{/students(sortBy='studentCode', sortDir=${reverseSortDir}, search=${search})}"
+                                                   class="text-decoration-none">
+                                                    Mã SV
+                                                    <i class="fas fa-sort ms-1" th:if="${sortBy != 'studentCode'}"></i>
+                                                    <i class="fas fa-sort-up ms-1" th:if="${sortBy == 'studentCode' and sortDir == 'asc'}"></i>
+                                                    <i class="fas fa-sort-down ms-1" th:if="${sortBy == 'studentCode' and sortDir == 'desc'}"></i>
+                                                </a>
+                                            </th>
+                                            <th>
+                                                <a th:href="@{/students(sortBy='fullName', sortDir=${reverseSortDir}, search=${search})}"
+                                                   class="text-decoration-none">
+                                                    Họ tên
+                                                    <i class="fas fa-sort ms-1" th:if="${sortBy != 'fullName'}"></i>
+                                                    <i class="fas fa-sort-up ms-1" th:if="${sortBy == 'fullName' and sortDir == 'asc'}"></i>
+                                                    <i class="fas fa-sort-down ms-1" th:if="${sortBy == 'fullName' and sortDir == 'desc'}"></i>
+                                                </a>
+                                            </th>
+                                            <th>Email</th>
+                                            <th>Lớp</th>
+                                            <th>Ngành</th>
+                                            <th>GPA</th>
+                                            <th>Trạng thái</th>
+                                            <th width="150">Thao tác</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr th:each="student : ${students.content}">
+                                            <td>
+                                                <span class="fw-bold" th:text="${student.studentCode}">SV001</span>
+                                            </td>
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    <div class="avatar-sm bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-2">
+                                                        <i class="fas fa-user"></i>
+                                                    </div>
+                                                    <div>
+                                                        <div class="fw-medium" th:text="${student.fullName}">Nguyễn Văn A</div>
+                                                        <small class="text-muted" th:text="${student.phone}">0123456789</small>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <span th:text="${student.email}">email@example.com</span>
+                                            </td>
+                                            <td>
+                                                <span class="badge bg-info" th:text="${student.className}">CNTT2022A</span>
+                                            </td>
+                                            <td>
+                                                <span th:text="${student.major}">Công nghệ thông tin</span>
+                                            </td>
+                                            <td>
+                                                <span class="fw-bold" 
+                                                      th:classappend="${student.gpa >= 3.5} ? 'text-success' : (${student.gpa >= 2.5} ? 'text-warning' : 'text-danger')"
+                                                      th:text="${student.gpa}">3.5</span>
+                                            </td>
+                                            <td>
+                                                <span class="badge" 
+                                                      th:classappend="${student.isActive} ? 'bg-success' : 'bg-danger'"
+                                                      th:text="${student.isActive} ? 'Hoạt động' : 'Không hoạt động'">
+                                                    Hoạt động
+                                                </span>
+                                            </td>
+                                            <td class="table-actions">
+                                                <div class="btn-group btn-group-sm" role="group">
+                                                    <a th:href="@{/students/{id}(id=${student.id})}" 
+                                                       class="btn btn-outline-info" 
+                                                       title="Xem chi tiết">
+                                                        <i class="fas fa-eye"></i>
+                                                    </a>
+                                                    <a th:href="@{/students/{id}/edit(id=${student.id})}" 
+                                                       class="btn btn-outline-primary" 
+                                                       title="Chỉnh sửa">
+                                                        <i class="fas fa-edit"></i>
+                                                    </a>
+                                                    <button type="button" 
+                                                            class="btn btn-outline-danger" 
+                                                            title="Xóa"
+                                                            onclick="confirmDelete(this)"
+                                                            th:data-delete-url="@{/students/{id}/delete(id=${student.id})}">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr th:if="${students.content.isEmpty()}">
+                                            <td colspan="8" class="text-center py-4">
+                                                <i class="fas fa-search fa-2x text-muted mb-2"></i>
+                                                <p class="text-muted mb-0">Không tìm thấy sinh viên nào</p>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        
+                        <!-- Pagination -->
+                        <div class="card-footer" th:if="${students.totalPages > 1}">
+                            <nav aria-label="Student pagination">
+                                <ul class="pagination justify-content-center mb-0">
+                                    <li class="page-item" th:classappend="${students.first} ? 'disabled'">
+                                        <a class="page-link" 
+                                           th:href="@{/students(page=0, size=${students.size}, sortBy=${sortBy}, sortDir=${sortDir}, search=${search})}">
+                                            <i class="fas fa-angle-double-left"></i>
+                                        </a>
+                                    </li>
+                                    <li class="page-item" th:classappend="${students.first} ? 'disabled'">
+                                        <a class="page-link" 
+                                           th:href="@{/students(page=${students.number - 1}, size=${students.size}, sortBy=${sortBy}, sortDir=${sortDir}, search=${search})}">
+                                            <i class="fas fa-angle-left"></i>
+                                        </a>
+                                    </li>
+                                    
+                                    <li class="page-item" 
+                                        th:each="i : ${#numbers.sequence(0, students.totalPages - 1)}"
+                                        th:if="${i >= students.number - 2 and i <= students.number + 2}"
+                                        th:classappend="${i == students.number} ? 'active'">
+                                        <a class="page-link" 
+                                           th:href="@{/students(page=${i}, size=${students.size}, sortBy=${sortBy}, sortDir=${sortDir}, search=${search})}"
+                                           th:text="${i + 1}">1</a>
+                                    </li>
+                                    
+                                    <li class="page-item" th:classappend="${students.last} ? 'disabled'">
+                                        <a class="page-link" 
+                                           th:href="@{/students(page=${students.number + 1}, size=${students.size}, sortBy=${sortBy}, sortDir=${sortDir}, search=${search})}">
+                                            <i class="fas fa-angle-right"></i>
+                                        </a>
+                                    </li>
+                                    <li class="page-item" th:classappend="${students.last} ? 'disabled'">
+                                        <a class="page-link" 
+                                           th:href="@{/students(page=${students.totalPages - 1}, size=${students.size}, sortBy=${sortBy}, sortDir=${sortDir}, search=${search})}">
+                                            <i class="fas fa-angle-double-right"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style layout:fragment="css">
+        .avatar-sm {
+            width: 32px;
+            height: 32px;
+            font-size: 14px;
+        }
+        .table-actions .btn {
+            margin-right: 2px;
+        }
+    </style>
+
+    <script layout:fragment="scripts">
+        function confirmDelete(button) {
+            const deleteUrl = button.getAttribute('data-delete-url');
+            
+            if (confirm('Bạn có chắc chắn muốn xóa sinh viên này không?')) {
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = deleteUrl;
+                
+                // Add CSRF token if needed
+                const csrfToken = document.querySelector('meta[name="_csrf"]');
+                if (csrfToken) {
+                    const csrfInput = document.createElement('input');
+                    csrfInput.type = 'hidden';
+                    csrfInput.name = '_csrf';
+                    csrfInput.value = csrfToken.getAttribute('content');
+                    form.appendChild(csrfInput);
+                }
+                
+                document.body.appendChild(form);
+                form.submit();
+            }
+        }
+    </script>
+</body>
+</html>
