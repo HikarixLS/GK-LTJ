@@ -116,9 +116,9 @@ mvn spring-boot:run
 
 | Tên đăng nhập | Mật khẩu | Quyền |
 |---------------|----------|-------|
-| admin | admin123 | ADMIN |
-| manager | manager123 | MANAGER |
-| user | user123 | USER |
+| admin         | admin123 | ADMIN |
+| manager       | manager123 | MANAGER |
+| user          | user123  | USER |
 
 ## 📖 Hướng dẫn sử dụng
 
