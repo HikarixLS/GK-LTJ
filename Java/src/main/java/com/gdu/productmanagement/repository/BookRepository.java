@@ -101,11 +101,6 @@ public interface BookRepository extends JpaRepository<Book, Long> {
     @Query("SELECT COUNT(b) FROM Book b WHERE b.status = 'AVAILABLE'")
     Long countAvailableBooks();
 
-    @Query("SELECT b.category, COUNT(b) FROM Book b WHERE b.status = 'AVAILABLE' GROUP BY b.category")
-    List<Object[]> countBooksByCategory();
-
     @Query("SELECT b.format, COUNT(b) FROM Book b WHERE b.status = 'AVAILABLE' GROUP BY b.format")
     List<Object[]> countBooksByFormat();
-
-    boolean existsByIsbn(String isbn);
 }

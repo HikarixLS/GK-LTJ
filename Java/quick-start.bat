@@ -1,56 +1,56 @@
 @echo off
 cls
 echo ========================================================
-echo    ⚡ QUICK START - Product Management System
+echo    🚀 BOOK STORE MANAGEMENT - QUICK START
 echo ========================================================
 echo.
 
 cd /d "%~dp0"
-
-echo 🚀 Starting application in quick mode...
-echo 💡 Make sure XAMPP MySQL is running!
+echo 📁 Current directory: %CD%
 echo.
 
-REM Quick check for MySQL
-tasklist /FI "IMAGENAME eq mysqld.exe" 2>NUL | find /I /N "mysqld.exe" >NUL
-if "%ERRORLEVEL%" neq "0" (
-    echo ❌ MySQL not running! Please start XAMPP first.
-    timeout /t 3 >nul
+REM Set Java Home for H drive
+set "JAVA_HOME=H:\JDK 24"
+set "PATH=%JAVA_HOME%\bin;%PATH%"
+
+echo 📋 Using Java: %JAVA_HOME%
+echo.
+
+REM Test Java
+echo 🔍 Testing Java...
+java -version
+if %errorlevel% neq 0 (
+    echo ❌ Java failed
+    pause
     exit /b 1
 )
 
-echo ✅ MySQL is running
+echo ✅ Java OK
 echo.
 
-REM Try different Maven options
-echo 🔍 Detecting Maven...
-
-REM Option 1: Use full path to Maven if available
-if exist "C:\apache-maven-3.9.11\bin\mvn.cmd" (
-    echo ✅ Using Maven from C:\apache-maven-3.9.11\bin\
-    "C:\apache-maven-3.9.11\bin\mvn.cmd" spring-boot:run -Dspring-boot.run.fork=false
-    goto end
+REM Check MySQL
+echo 🔍 Checking MySQL...
+tasklist /FI "IMAGENAME eq mysqld.exe" 2>NUL | find /I /N "mysqld.exe" >NUL
+if "%ERRORLEVEL%" == "0" (
+    echo ✅ MySQL is running
+) else (
+    echo ⚠️  Please start XAMPP MySQL first!
+    pause
+    exit /b 1
 )
 
-REM Option 2: Try system Maven
-mvn -version >nul 2>&1
-if %errorlevel% == 0 (
-    echo ✅ Using system Maven
-    mvn spring-boot:run -Dspring-boot.run.fork=false
-    goto end
-)
+echo.
+echo ========================================================
+echo 🏗️  BUILDING AND STARTING APPLICATION...
+echo ========================================================
+echo 🌐 Application will be available at: http://localhost:8080
+echo 🛑 Press Ctrl+C to stop
+echo.
 
-REM Option 3: Use Maven Wrapper
-if exist "mvnw.cmd" (
-    echo ✅ Using Maven Wrapper
-    mvnw.cmd spring-boot:run -Dspring-boot.run.fork=false
-    goto end
-)
+REM Try to run directly with Spring Boot Maven plugin
+echo 🚀 Starting Spring Boot application...
+mvnw.cmd spring-boot:run
 
-REM Option 4: Last resort - call the main script
-echo ⚠️ Maven not found in quick mode
-echo 💡 Using main startup script...
-call start.bat
-
-:end
+echo.
+echo 🏁 Application stopped.
 pause

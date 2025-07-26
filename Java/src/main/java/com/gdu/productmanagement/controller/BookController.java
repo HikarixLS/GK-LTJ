@@ -22,10 +22,10 @@ import java.util.Optional;
  * Controller xử lý các thao tác CRUD cho Book (Sách)
  * Bao gồm: Hiển thị danh sách, thêm, sửa, xóa sách
  */
+@Slf4j
 @Controller
 @RequestMapping("/books")
 @RequiredArgsConstructor
-@Slf4j
 public class BookController {
 
     private final BookService bookService;

@@ -15,10 +15,10 @@ import java.util.Optional;
 /**
  * Service xử lý logic nghiệp vụ cho Book (Sách)
  */
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional
-@Slf4j
 public class BookService {
 
     private final BookRepository bookRepository;

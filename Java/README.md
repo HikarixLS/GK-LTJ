@@ -1,50 +1,57 @@
-# Hệ thống quản lý sản phẩm (Product Management System)
+# 📚 Hệ thống Quản lý Cửa hàng Sách (Book Store Management System)
 
-Dự án này là một ứng dụng web quản lý sản phẩm toàn diện được xây dựng với Java Spring Boot và JSF, cung cấp các chức năng quản lý sinh viên, sản phẩm, cửa hàng và thư viện sách.
+Dự án này là một ứng dụng web quản lý cửa hàng sách toàn diện được xây dựng với **Java Spring Boot**, cung cấp các chức năng quản lý sách, sinh viên, sản phẩm và cửa hàng với giao diện hiện đại và hệ thống bảo mật hoàn chỉnh.
 
 ## 🚀 Tính năng chính
 
-### 👨‍🎓 Quản lý sinh viên
-- Thêm, sửa, xóa thông tin sinh viên
-- Tìm kiếm và lọc sinh viên theo nhiều tiêu chí
-- Quản lý thông tin lớp học, ngành học
-- Theo dõi điểm GPA và trạng thái hoạt động
-- Thống kê sinh viên theo lớp và ngành
+### � **Quản lý Sách (Book Management)**
+- ✅ **Full CRUD operations** - Thêm, sửa, xóa, xem chi tiết sách
+- ✅ **Tìm kiếm nâng cao** - Theo tên sách, tác giả, ISBN, thể loại
+- ✅ **Phân trang và sắp xếp** - User-friendly pagination với nhiều tiêu chí
+- ✅ **Form validation** - Client & server-side validation hoàn chỉnh  
+- ✅ **Real-time preview** - Preview sách khi nhập thông tin
+- ✅ **Image management** - Hỗ trợ URL ảnh bìa sách
+- ✅ **Category filtering** - Filter theo 16+ thể loại sách
+- ✅ **Stock management** - Quản lý số lượng tồn kho
+- ✅ **Rating system** - Hệ thống đánh giá 5 sao với review count
+- ✅ **Statistics** - Thống kê sách theo category, status, popularity
 
-### 🛍️ Quản lý sản phẩm
-- Quản lý danh mục sản phẩm
-- Theo dõi tồn kho và giá cả
-- Phân loại sản phẩm theo danh mục
-- Quản lý thông tin nhà sản xuất, bảo hành
-- Cảnh báo sản phẩm sắp hết hàng
-- Thống kê giá trị tồn kho
+### �👨‍🎓 **Quản lý Sinh viên**
+- ✅ Thêm, sửa, xóa thông tin sinh viên
+- ✅ Tìm kiếm và lọc sinh viên theo nhiều tiêu chí
+- ✅ Quản lý thông tin lớp học, ngành học
+- ✅ Theo dõi điểm GPA và trạng thái hoạt động
+- ✅ Thống kê sinh viên theo lớp và ngành
 
-### 🏪 Quản lý cửa hàng
-- Thông tin chi tiết cửa hàng
-- Quản lý địa chỉ và liên hệ
-- Theo dõi trạng thái hoạt động
-- Thống kê cửa hàng theo khu vực
+### 🛍️ **Quản lý Sản phẩm** (Backend ready)
+- ✅ Quản lý danh mục sản phẩm đầy đủ
+- ✅ Theo dõi tồn kho và giá cả
+- ✅ Phân loại sản phẩm theo danh mục
+- ✅ Cảnh báo sản phẩm sắp hết hàng
+- ✅ Thống kê giá trị tồn kho
 
-### 📚 Thư viện sách
-- Quản lý thông tin sách (ISBN, tác giả, nhà xuất bản)
-- Phân loại theo thể loại và định dạng
-- Hệ thống đánh giá và nhận xét
-- Theo dõi tồn kho sách
-- Thống kê sách theo danh mục
+### 🏪 **Quản lý Cửa hàng** (Backend ready)
+- ✅ Thông tin chi tiết cửa hàng
+- ✅ Quản lý địa chỉ và liên hệ
+- ✅ Theo dõi trạng thái hoạt động
+- ✅ Thống kê cửa hàng theo khu vực
 
-### 🔐 Hệ thống bảo mật
-- Xác thực và phân quyền người dùng
-- 3 cấp độ quyền: Admin, Manager, User
-- Bảo mật mật khẩu với BCrypt
-- Remember me và session management
+### � **Hệ thống Bảo mật**
+- ✅ **Authentication** - Đăng nhập/đăng xuất an toàn
+- ✅ **Authorization** - 3 cấp độ quyền:
+  - **USER**: Xem thông tin sách và sinh viên
+  - **MANAGER**: Thêm/sửa sách (không xóa)  
+  - **ADMIN**: Full quyền truy cập (bao gồm xóa)
+- ✅ **Password encryption** - BCrypt hashing
+- ✅ **Session management** - Remember me functionality
 
 ## 🛠️ Công nghệ sử dụng
 
-- **Backend**: Java 17, Spring Boot 3.2, Spring Security, Spring Data JPA
-- **Frontend**: Thymeleaf, Bootstrap 5, Font Awesome
-- **Database**: SQL Server, MySQL (hỗ trợ), H2 (development)
-- **Build Tool**: Maven
-- **Libraries**: Lombok, MapStruct, Hibernate Validator
+- **Backend**: Java 17+, Spring Boot 3.2, Spring Security, Spring Data JPA
+- **Frontend**: Thymeleaf, Bootstrap 5, Font Awesome 6, JavaScript
+- **Database**: MySQL (chính), H2 (development/testing)  
+- **Build Tool**: Maven với wrapper
+- **Libraries**: Lombok, Hibernate Validator, Jackson
 
 ## 📋 Yêu cầu hệ thống
 
