@@ -1,49 +1,50 @@
 @echo off
+title Book Store Server
 cls
+
 echo ========================================================
-echo    🚀 SPRING BOOT DIRECT RUN - No Maven Build
+echo    🚀 BOOK STORE MANAGEMENT - SIMPLE RUNNER
 echo ========================================================
-echo.
 
 cd /d "%~dp0"
-echo 📁 Current directory: %CD%
+echo 📁 Current Directory: %CD%
+
+REM Set Java 24
+set JAVA_HOME=H:\JDK 24
+set PATH=%JAVA_HOME%\bin;%PATH%
+
+echo 📋 Testing Java...
+java -version
+
 echo.
-
-REM Set Java environment
-set "JAVA_HOME=H:\JDK 24"
-set "PATH=%JAVA_HOME%\bin;%PATH%"
-
-echo 📋 Using Java: %JAVA_HOME%
-echo.
-
-REM Check MySQL
 echo 🔍 Checking MySQL...
-tasklist /FI "IMAGENAME eq mysqld.exe" 2>NUL | find /I /N "mysqld.exe" >NUL
-if "%ERRORLEVEL%" == "0" (
+tasklist /FI "IMAGENAME eq mysqld.exe" 2>NUL | find /I "mysqld.exe" >NUL
+if %errorlevel% == 0 (
     echo ✅ MySQL is running
 ) else (
-    echo ⚠️  Please start XAMPP MySQL first!
+    echo ❌ MySQL not running - Please start XAMPP MySQL!
     pause
     exit /b 1
 )
 
 echo.
-echo 🚀 Trying Spring Boot without Maven build...
-echo 🌐 Application will be available at: http://localhost:8080
-echo 🛑 Press Ctrl+C to stop
-echo.
+echo 🧹 Cleaning...
+call mvnw.cmd clean
 
-REM Try to run with gradle wrapper or direct Spring Boot
-if exist "gradlew.bat" (
-    echo 📦 Found Gradle wrapper, using Gradle...
-    gradlew.bat bootRun
-) else (
-    echo 📦 Using Maven wrapper with simpler approach...
-    REM Force using system java instead of release checking
-    set "MAVEN_OPTS=-Dmaven.compiler.release="
-    mvnw.cmd -Dmaven.compiler.source=17 -Dmaven.compiler.target=17 spring-boot:run
+echo 🔨 Compiling...
+call mvnw.cmd compile
+if %errorlevel% neq 0 (
+    echo ❌ Compilation failed!
+    pause
+    exit /b 1
 )
 
+echo ✅ Compilation successful!
 echo.
-echo 🏁 Application stopped.
+echo 🚀 Starting server...
+echo ⏳ Wait for "APPLICATION STARTED SUCCESSFULLY" message...
+echo.
+
+call mvnw.cmd spring-boot:run
+
 pause
