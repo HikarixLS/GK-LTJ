@@ -1,15 +1,4 @@
-H:\Github\LTJ\GK-LTJ\Java\src\main\java\com\gdu\productmanagement\config\DataInitializer.java
+H:\Github\LTJ\GK-LTJ\Java\src\main\java\com\gdu\productmanagement\config\SecurityConfig.java
+H:\Github\LTJ\GK-LTJ\Java\src\main\java\com\gdu\productmanagement\controller\AuthController.java
 H:\Github\LTJ\GK-LTJ\Java\src\main\java\com\gdu\productmanagement\controller\TestController.java
-H:\Github\LTJ\GK-LTJ\Java\src\main\java\com\gdu\productmanagement\entity\Book.java
-H:\Github\LTJ\GK-LTJ\Java\src\main\java\com\gdu\productmanagement\entity\Product.java
-H:\Github\LTJ\GK-LTJ\Java\src\main\java\com\gdu\productmanagement\entity\Store.java
-H:\Github\LTJ\GK-LTJ\Java\src\main\java\com\gdu\productmanagement\entity\Student.java
-H:\Github\LTJ\GK-LTJ\Java\src\main\java\com\gdu\productmanagement\entity\StudentProduct.java
-H:\Github\LTJ\GK-LTJ\Java\src\main\java\com\gdu\productmanagement\entity\User.java
 H:\Github\LTJ\GK-LTJ\Java\src\main\java\com\gdu\productmanagement\ProductManagementApplication.java
-H:\Github\LTJ\GK-LTJ\Java\src\main\java\com\gdu\productmanagement\repository\BookRepository.java
-H:\Github\LTJ\GK-LTJ\Java\src\main\java\com\gdu\productmanagement\repository\ProductRepository.java
-H:\Github\LTJ\GK-LTJ\Java\src\main\java\com\gdu\productmanagement\repository\StoreRepository.java
-H:\Github\LTJ\GK-LTJ\Java\src\main\java\com\gdu\productmanagement\repository\StudentProductRepository.java
-H:\Github\LTJ\GK-LTJ\Java\src\main\java\com\gdu\productmanagement\repository\StudentRepository.java
-H:\Github\LTJ\GK-LTJ\Java\src\main\java\com\gdu\productmanagement\repository\UserRepository.java
