@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Main-Class: BookstoreApp
+Class-Path: lib/mysql-connector-java-8.0.33.jar
+Created-By: Bookstore Management System
+Implementation-Title: Bookstore Management
+Implementation-Version: 1.0.0
+Implementation-Vendor: LTJ Course

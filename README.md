@@ -1,290 +1,246 @@
-# 📚 Hệ thống Quản lý Cửa hàng Sách
+# Hệ thống Quản lý Cửa hàng Sách - Windows Edition
 
-Dự án Spring Boot để xây dựng hệ thống quản lý cửa hàng sách với đầy đủ các chức năng CRUD, authentication và authorization.
+## 📖 Mô tả dự án
 
-## 🚀 Tính năng chính
+Ứng dụng Java Swing chạy hoàn toàn trên **Windows** để quản lý cửa hàng sách với các chức năng:
+- 📚 Quản lý sách (CRUD) với giao diện đẹp
+- 👥 Quản lý người dùng và phân quyền 
+- 🔍 Tìm kiếm và lọc dữ liệu thông minh
+- 🎨 Giao diện GUI Swing chuyên nghiệp
+- 🗄️ Kết nối MySQL với validation đầy đủ
 
-### 📖 Quản lý Sách (CRUD)
-- **Hiển thị** danh sách sách với phân trang
-- **Thêm** sách mới (Admin only)
-- **Sửa** thông tin sách (Admin only)  
-- **Xóa** sách (Admin only)
-- **Tìm kiếm** sách theo nhiều tiêu chí
-- **Xem chi tiết** sách
+## 🖥️ Môi trường Windows
 
-### 👥 Quản lý Người dùng
-- **Đăng ký** tài khoản mới
-- **Đăng nhập/Đăng xuất**
-- **Phân quyền** User/Admin
-- **Quản lý** danh sách người dùng (Admin only)
+### Yêu cầu hệ thống:
+- **Windows 10/11** (64-bit khuyến nghị)
+- **Java JDK 11+** (Oracle hoặc OpenJDK)
+- **MySQL Server 8.0+**
+- **RAM**: Tối thiểu 4GB
+- **Disk**: 1GB trống cho ứng dụng và database
 
-### 🔍 Tìm kiếm & Lọc
-- Tìm kiếm theo tên sách, tác giả, nhà xuất bản
-- Lọc theo thể loại
-- Tìm kiếm nâng cao
+### Các script Windows được cung cấp:
+- 🔧 **`install-windows.ps1`** - Cài đặt tự động dependencies (PowerShell)
+- ✅ **`check-system.bat`** - Kiểm tra hệ thống và dependencies
+- ⚙️ **`setup.bat`** - Setup database và build ứng dụng  
+- 🏗️ **`build.bat`** - Build dự án và tạo JAR
+- 🚀 **`run.bat`** - Chạy ứng dụng
 
-### 🔐 Bảo mật
-- Authentication với Spring Security
-- Authorization dựa trên roles
-- Mã hóa mật khẩu với BCrypt
-- Session management
+## 🚀 Công nghệ sử dụng
 
-## 🛠️ Công nghệ sử dụng
+- **Ngôn ngữ**: Java 11+
+- **GUI Framework**: Java Swing
+- **Database**: MySQL 8.0+
+- **JDBC Driver**: MySQL Connector/J
+- **Architecture**: MVC Pattern
 
-- **Framework**: Spring Boot 3.2.0
-- **Database**: H2 (development), MySQL (production)  
-- **ORM**: Spring Data JPA
-- **Security**: Spring Security 6
-- **Template Engine**: Thymeleaf
-- **Frontend**: Bootstrap 5, Bootstrap Icons
-- **Build Tool**: Maven
-- **Java Version**: 17
-
-## 📁 Cấu trúc Project
+## 📁 Cấu trúc dự án
 
 ```
 src/
 ├── main/
-│   ├── java/com/bookstore/
-│   │   ├── config/               # Cấu hình ứng dụng
-│   │   │   ├── SecurityConfig.java
-│   │   │   └── DataInitializer.java
-│   │   ├── controller/           # REST Controllers
-│   │   │   ├── HomeController.java
-│   │   │   ├── BookController.java
-│   │   │   ├── AuthController.java
-│   │   │   └── AdminController.java
-│   │   ├── entity/               # JPA Entities
+│   ├── java/
+│   │   ├── model/          # Các lớp thực thể
 │   │   │   ├── Book.java
 │   │   │   ├── User.java
-│   │   │   ├── Role.java
-│   │   │   └── RoleName.java
-│   │   ├── repository/           # Data Access Layer
-│   │   │   ├── BookRepository.java
-│   │   │   ├── UserRepository.java
-│   │   │   └── RoleRepository.java
-│   │   ├── service/              # Business Logic
+│   │   │   └── Category.java
+│   │   ├── dao/            # Data Access Objects
+│   │   │   ├── BookDAO.java
+│   │   │   ├── UserDAO.java
+│   │   │   └── DatabaseConnection.java
+│   │   ├── service/        # Business Logic
 │   │   │   ├── BookService.java
-│   │   │   ├── UserService.java
-│   │   │   └── UserPrincipal.java
-│   │   └── BookstoreApplication.java
+│   │   │   └── UserService.java
+│   │   ├── gui/            # Giao diện người dùng
+│   │   │   ├── LoginFrame.java
+│   │   │   ├── MainFrame.java
+│   │   │   ├── BookManagementPanel.java
+│   │   │   ├── BookDialog.java
+│   │   │   ├── UserManagementPanel.java
+│   │   │   └── UserDialog.java
+│   │   └── BookstoreApp.java
 │   └── resources/
-│       ├── templates/            # Thymeleaf Templates
-│       │   ├── home.html
-│       │   ├── layout.html
-│       │   ├── auth/
-│       │   │   ├── login.html
-│       │   │   └── register.html
-│       │   └── books/
-│       │       ├── list.html
-│       │       ├── add.html
-│       │       ├── edit.html
-│       │       └── view.html
-│       └── application.properties
-└── pom.xml
+│       ├── database/
+│       │   └── bookstore.sql
+│       └── database.properties
+└── lib/
+    └── mysql-connector-java-8.0.33.jar
 ```
 
-## 🏃‍♂️ Cách chạy dự án
+## ⚙️ Hướng dẫn chạy dự án Windows
 
-### Yêu cầu hệ thống
-- Java 17 hoặc cao hơn (đã có Java 24 ✅)
-- Maven 3.6+ hoặc sử dụng Maven Wrapper
-- IDE: VS Code, IntelliJ IDEA, Eclipse
+### 🎯 CÁCH NHANH NHẤT - Chạy ngay!
 
-### Bước 1: Cài đặt Maven (nếu chưa có)
+**👉 Double-click vào file: `start-here.bat`** 
 
-#### Option 1: Sử dụng Maven Wrapper (Khuyến nghị)
-Dự án đã bao gồm Maven Wrapper, bạn có thể chạy trực tiếp:
-```bash
-# Windows
-.\mvnw.cmd spring-boot:run
+File này sẽ hướng dẫn bạn từng bước một cách tự động!
 
-# Linux/Mac
-./mvnw spring-boot:run
+### 🤖 Cách 1: Cài đặt tự động (Khuyến nghị cho người mới)
+
+1. **Mở PowerShell as Administrator** (Nhấn Win + X → chọn "Windows PowerShell (Admin)")
+2. **Cho phép chạy script:**
+   ```powershell
+   Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
+   ```
+3. **Chạy script cài đặt tự động:**
+   ```powershell
+   .\install-windows.ps1
+   ```
+4. **Setup database:**
+   ```cmd
+   setup.bat
+   ```
+5. **Chạy ứng dụng:**
+   ```cmd
+   run.bat
+   ```
+
+### ⚡ Cách 2: Chạy nhanh (nếu đã có Java và MySQL)
+
+```cmd
+# Kiểm tra hệ thống
+check-system.bat
+
+# Setup và build
+setup.bat
+
+# Chạy ứng dụng
+run.bat
 ```
 
-#### Option 2: Cài đặt Maven
-1. Download Maven từ: https://maven.apache.org/download.cgi
-2. Giải nén và thêm `bin` folder vào PATH
-3. Kiểm tra: `mvn -version`
+### � Cách 3: Hướng dẫn chi tiết từng bước
 
-### Bước 2: Chạy ứng dụng
+👉 **Xem file: `HUONG-DAN-CHAY.md`** để có hướng dẫn siêu chi tiết!
 
-#### Cách 1: Sử dụng Maven Wrapper (Khuyến nghị)
-```bash
-# Chạy trực tiếp
-.\mvnw.cmd spring-boot:run
-
-# Hoặc build và chạy jar
-.\mvnw.cmd clean package
-java -jar target/bookstore-management-0.0.1-SNAPSHOT.jar
-```
-
-#### Cách 2: Sử dụng VS Code Task
-1. Mở VS Code
-2. Nhấn `Ctrl+Shift+P`
-3. Gõ "Tasks: Run Task"
-4. Chọn "Build and Run Spring Boot Application"
-
-#### Cách 3: Nếu đã cài Maven
-```bash
-# Sử dụng Maven
-mvn spring-boot:run
-
-# Hoặc build và chạy jar
-mvn clean package
-java -jar target/bookstore-management-0.0.1-SNAPSHOT.jar
-```
-
-### Bước 3: Truy cập ứng dụng
-- **URL**: http://localhost:8080
-- **H2 Console**: http://localhost:8080/h2-console
-  - JDBC URL: `jdbc:h2:mem:bookstore`
-  - Username: `sa`
-  - Password: `password`
-
-## 👤 Tài khoản mặc định
-
-Hệ thống sẽ tự động tạo các tài khoản sau khi khởi động:
-
-### Admin
-- **Username**: `admin`
-- **Password**: `admin123`
-- **Email**: `admin@bookstore.com`
-- **Quyền**: Toàn quyền quản trị
-
-### User thường
-- **Username**: `user`  
-- **Password**: `user123`
-- **Email**: `user@bookstore.com`
-- **Quyền**: Chỉ xem thông tin
-
-## 🔧 Cấu hình Database
-
-### H2 Database (Mặc định - Development)
-```properties
-spring.datasource.url=jdbc:h2:mem:bookstore
-spring.datasource.username=sa
-spring.datasource.password=password
-spring.h2.console.enabled=true
-```
-
-### MySQL (Production)
-Uncomment và cấu hình trong `application.properties`:
-```properties
-spring.datasource.url=jdbc:mysql://localhost:3306/bookstore
-spring.datasource.username=root
-spring.datasource.password=yourpassword
-spring.jpa.database-platform=org.hibernate.dialect.MySQLDialect
-```
-
-## 📋 API Endpoints
-
-### Public Endpoints
-- `GET /` - Trang chủ
-- `GET /books` - Danh sách sách
-- `GET /books/view/{id}` - Chi tiết sách
-- `GET /books/search` - Tìm kiếm sách
-- `GET /login` - Trang đăng nhập
-- `GET /register` - Trang đăng ký
-
-### Admin Endpoints
-- `GET /admin` - Dashboard admin
-- `GET /admin/users` - Quản lý users
-- `GET /books/add` - Form thêm sách
-- `POST /books/add` - Thêm sách mới
-- `GET /books/edit/{id}` - Form sửa sách
-- `POST /books/edit/{id}` - Cập nhật sách
-- `POST /books/delete/{id}` - Xóa sách
-
-## 🎯 Chức năng đã thực hiện
-
-### ✅ Phân tích & Thiết kế
-- [x] Thiết kế Entity relationships
-- [x] Thiết kế Database schema
-- [x] Thiết kế kiến trúc hệ thống (3-layer)
-
-### ✅ Framework Spring Boot
-- [x] Cấu hình Spring Boot project
-- [x] Integration với Spring Data JPA
-- [x] Integration với Spring Security
-- [x] Integration với Thymeleaf
-
-### ✅ CRUD Operations
-- [x] **Create**: Thêm sách mới (Admin only)
-- [x] **Read**: Hiển thị danh sách và chi tiết sách
-- [x] **Update**: Sửa thông tin sách (Admin only)  
-- [x] **Delete**: Xóa sách (Admin only)
-
-### ✅ Database Connection
-- [x] Kết nối H2 Database (Development)
-- [x] Hỗ trợ MySQL (Production)
-- [x] JPA/Hibernate configuration
-- [x] Database initialization
-
-### ✅ Authentication & Authorization
-- [x] User registration/login
-- [x] Role-based access control
-- [x] Session management
-- [x] Password encryption
-
-## 🔄 Tính năng bổ sung
-
-### 🔍 Tìm kiếm nâng cao
-- Tìm kiếm theo multiple criteria
-- Auto-complete cho thể loại và NXB
-- Filter và sort results
-
-### 📊 Dashboard & Statistics  
-- Thống kê số lượng sách, users
-- Báo cáo theo thể loại
-- Admin dashboard
-
-### 🎨 UI/UX
-- Responsive design với Bootstrap 5
-- Modern và user-friendly interface
-- Interactive components
-- Flash messages
-
-## 🤝 Hướng phát triển
-
-- [ ] Shopping cart functionality
-- [ ] Order management
-- [ ] Payment integration
-- [ ] Email notifications
-- [ ] File upload cho book images
-- [ ] REST API for mobile app
-- [ ] Advanced reporting
-- [ ] Multi-language support
-
-## 📝 Ghi chú
-
-- Dự án được phát triển cho mục đích học tập và demo
-- Code được comment chi tiết bằng tiếng Việt
-- Follow các best practices của Spring Boot
-- Responsive design tương thích mobile
-
-## 🐛 Troubleshooting
-
-### Lỗi port đã được sử dụng
-```bash
-# Thay đổi port trong application.properties
-server.port=8081
-```
-
-### Lỗi Java version
-```bash
-# Kiểm tra Java version
+### 📋 Cách 4: Setup thủ công
+```cmd
+# Kiểm tra Java
 java -version
-# Cần Java 17+
+javac -version
+
+# Tạo database
+mysql -u root -p
+CREATE DATABASE bookstore;
+exit
+
+# Import data
+mysql -u root -p bookstore < "src\main\resources\database\bookstore.sql"
+
+# Build
+build.bat
+
+# Run
+run.bat
 ```
 
-### Lỗi database connection
-```bash
-# Kiểm tra H2 console: http://localhost:8080/h2-console
-# Hoặc check application.properties
+## 👥 Tài khoản Demo
+
+| Username | Password | Vai trò | Mô tả |
+|----------|----------|---------|--------|
+| admin | admin123 | Admin | Toàn quyền quản lý |
+| user | user123 | User | Chỉ xem thông tin |
+| manager | manager123 | Employee | Nhân viên |
+
+## 🔧 Tính năng chính
+
+### 1. Đăng nhập & Phân quyền
+- Xác thực người dùng
+- 3 loại vai trò: Admin, Employee, User
+- Phân quyền truy cập các chức năng
+
+### 2. Quản lý Sách
+- ✅ Thêm sách mới
+- ✅ Cập nhật thông tin sách
+- ✅ Xóa sách
+- ✅ Tìm kiếm theo tên, tác giả, ISBN
+- ✅ Lọc theo danh mục
+- ✅ Hiển thị thống kê
+
+### 3. Quản lý Người dùng (Admin)
+- ✅ Thêm người dùng mới
+- ✅ Cập nhật thông tin
+- ✅ Vô hiệu hóa tài khoản
+- ✅ Phân quyền vai trò
+
+### 4. Giao diện GUI
+- ✅ Thiết kế thân thiện, dễ sử dụng
+- ✅ Responsive layout
+- ✅ Validation dữ liệu
+- ✅ Thông báo lỗi rõ ràng
+
+## 📊 Database Schema
+
+### Bảng Users
+```sql
+user_id (PK) | username | password | full_name | email | phone | role | is_active | created_at | last_login
 ```
+
+### Bảng Books
+```sql
+book_id (PK) | title | author | isbn | category | price | quantity | publisher | publish_date | description
+```
+
+### Bảng Categories
+```sql
+category_id (PK) | category_name | description | created_at
+```
+
+## 🛠️ Phát triển
+
+### Thêm tính năng mới
+1. Tạo model class trong package `model`
+2. Tạo DAO class trong package `dao`
+3. Tạo service class trong package `service`
+4. Tạo GUI component trong package `gui`
+5. Cập nhật database schema nếu cần
+
+### Testing
+- Unit test cho các service class
+- Integration test cho DAO layer
+- UI test thủ công
+
+## 📝 Changelog
+
+### Version 1.0.0
+- ✅ Quản lý sách cơ bản (CRUD)
+- ✅ Hệ thống đăng nhập
+- ✅ Phân quyền người dùng
+- ✅ Tìm kiếm và lọc dữ liệu
+- ✅ Giao diện Swing
+
+### Các tính năng sắp có
+- 📋 Quản lý đơn hàng
+- 📊 Báo cáo thống kê
+- 🎨 Themes và customization
+- 💾 Export/Import dữ liệu
+- 🔍 Tìm kiếm nâng cao
+
+## 👨‍💻 Tác giả
+
+**Đồ án Lập trình Java**
+- Môn học: Lập trình Java
+- Năm học: 2025
+
+## 📄 Giấy phép
+
+Dự án này được phát triển cho mục đích học tập.
+
+## 🤝 Đóng góp
+
+Mọi đóng góp và cải thiện đều được hoan nghênh!
+
+1. Fork dự án
+2. Tạo feature branch
+3. Commit thay đổi
+4. Push lên branch
+5. Tạo Pull Request
+
+## 📞 Hỗ trợ
+
+Nếu có vấn đề khi chạy ứng dụng:
+1. Kiểm tra kết nối MySQL
+2. Xác minh thông tin trong database.properties
+3. Đảm bảo MySQL JDBC Driver trong classpath
+4. Kiểm tra log console để biết chi tiết lỗi
 
 ---
-
-**Developed with ❤️ using Spring Boot & Thymeleaf**
+*Chúc bạn sử dụng ứng dụng thành công! 📚*
