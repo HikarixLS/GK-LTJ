@@ -1,0 +1,17 @@
+com\bookstore\entity\User.class
+com\bookstore\repository\RoleRepository.class
+com\bookstore\entity\Book.class
+com\bookstore\service\BookService.class
+com\bookstore\entity\Role.class
+com\bookstore\controller\HomeController.class
+com\bookstore\controller\BookController.class
+com\bookstore\service\UserPrincipal.class
+com\bookstore\BookstoreApplication.class
+com\bookstore\entity\RoleName.class
+com\bookstore\controller\AuthController.class
+com\bookstore\service\UserService.class
+com\bookstore\controller\AdminController.class
+com\bookstore\repository\UserRepository.class
+com\bookstore\config\SecurityConfig.class
+com\bookstore\repository\BookRepository.class
+com\bookstore\config\DataInitializer.class

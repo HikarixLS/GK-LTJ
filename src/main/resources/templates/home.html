@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trang chủ - Cửa hàng sách</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    
+    <style>
+        .hero-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 80px 0;
+        }
+        .stats-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .stats-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+        .book-card {
+            transition: transform 0.3s;
+            border: none;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .book-card:hover {
+            transform: translateY(-10px);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
+        <div class="container">
+            <a class="navbar-brand fw-bold text-primary" th:href="@{/}">
+                <i class="bi bi-book"></i> Cửa hàng sách
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" th:href="@{/}">Trang chủ</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/books}">Danh sách sách</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/books/search}">Tìm kiếm</a>
+                    </li>
+                    <li class="nav-item" sec:authorize="hasRole('ADMIN')">
+                        <a class="nav-link" th:href="@{/admin}">Quản trị</a>
+                    </li>
+                </ul>
+                
+                <ul class="navbar-nav">
+                    <li class="nav-item" sec:authorize="!isAuthenticated()">
+                        <a class="nav-link" th:href="@{/login}">Đăng nhập</a>
+                    </li>
+                    <li class="nav-item" sec:authorize="!isAuthenticated()">
+                        <a class="nav-link" th:href="@{/register}">Đăng ký</a>
+                    </li>
+                    <li class="nav-item dropdown" sec:authorize="isAuthenticated()">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="bi bi-person-circle"></i> <span sec:authentication="name">User</span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">Hồ sơ</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <form th:action="@{/logout}" method="post" class="d-inline">
+                                    <button type="submit" class="dropdown-item">Đăng xuất</button>
+                                </form>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container text-center">
+            <h1 class="display-4 fw-bold mb-4">Chào mừng đến với Cửa hàng sách</h1>
+            <p class="lead mb-4">Hệ thống quản lý sách hiện đại với đầy đủ chức năng CRUD và phân quyền</p>
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <div class="input-group input-group-lg">
+                        <input type="text" class="form-control" placeholder="Tìm kiếm sách...">
+                        <button class="btn btn-warning" type="button">
+                            <i class="bi bi-search"></i> Tìm kiếm
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Statistics Section -->
+    <section class="py-5 bg-light">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="stats-card">
+                        <i class="bi bi-book-fill text-primary stats-icon"></i>
+                        <h3 th:text="${totalBooks}">0</h3>
+                        <p class="text-muted mb-0">Tổng số sách</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="stats-card">
+                        <i class="bi bi-people-fill text-success stats-icon"></i>
+                        <h3 th:text="${totalUsers}">0</h3>
+                        <p class="text-muted mb-0">Người dùng</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="stats-card">
+                        <i class="bi bi-check-circle-fill text-info stats-icon"></i>
+                        <h3 th:text="${availableBooks}">0</h3>
+                        <p class="text-muted mb-0">Sách có sẵn</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Recent Books Section -->
+    <section class="py-5">
+        <div class="container">
+            <h2 class="text-center mb-5">Sách mới nhất</h2>
+            <div class="row" th:if="${recentBooks != null and !recentBooks.empty}">
+                <div class="col-md-4 mb-4" th:each="book : ${recentBooks}">
+                    <div class="card book-card h-100">
+                        <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 250px;">
+                            <i class="bi bi-book text-muted" style="font-size: 4rem;" th:if="${book.imageUrl == null or book.imageUrl.empty}"></i>
+                            <img th:if="${book.imageUrl != null and !book.imageUrl.empty}" 
+                                 th:src="${book.imageUrl}" 
+                                 th:alt="${book.title}" 
+                                 class="img-fluid" style="max-height: 100%;">
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title" th:text="${book.title}">Tên sách</h5>
+                            <p class="card-text text-muted" th:text="${book.author}">Tác giả</p>
+                            <p class="card-text">
+                                <strong th:text="${#numbers.formatCurrency(book.price)}">Giá</strong>
+                            </p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="badge bg-primary" th:text="${book.category}">Thể loại</span>
+                                <small class="text-muted">
+                                    Còn: <span th:text="${book.quantity}">0</span>
+                                </small>
+                            </div>
+                        </div>
+                        <div class="card-footer bg-transparent">
+                            <a th:href="@{/books/view/{id}(id=${book.id})}" class="btn btn-outline-primary w-100">
+                                <i class="bi bi-eye"></i> Xem chi tiết
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div th:if="${recentBooks == null or recentBooks.empty}" class="text-center py-5">
+                <i class="bi bi-book text-muted" style="font-size: 4rem;"></i>
+                <h4 class="text-muted mt-3">Chưa có sách nào</h4>
+                <p class="text-muted">Hãy thêm sách để bắt đầu sử dụng hệ thống</p>
+                <a th:href="@{/books/add}" class="btn btn-primary" sec:authorize="hasRole('ADMIN')">
+                    <i class="bi bi-plus-circle"></i> Thêm sách đầu tiên
+                </a>
+            </div>
+            
+            <div class="text-center mt-4" th:if="${recentBooks != null and !recentBooks.empty}">
+                <a th:href="@{/books}" class="btn btn-primary btn-lg">
+                    <i class="bi bi-book"></i> Xem tất cả sách
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Categories Section -->
+    <section class="py-5 bg-light">
+        <div class="container">
+            <h2 class="text-center mb-5">Thể loại sách</h2>
+            <div class="row" th:if="${categories != null and !categories.empty}">
+                <div class="col-md-3 col-sm-6 mb-3" th:each="category : ${categories}">
+                    <a th:href="@{/books(category=${category})}" class="text-decoration-none">
+                        <div class="card text-center h-100 border-0 shadow-sm">
+                            <div class="card-body">
+                                <i class="bi bi-tag-fill text-primary mb-3" style="font-size: 2rem;"></i>
+                                <h5 class="card-title" th:text="${category}">Thể loại</h5>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            
+            <div th:if="${categories == null or categories.empty}" class="text-center py-3">
+                <p class="text-muted">Chưa có thể loại nào</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Admin Quick Actions -->
+    <section class="py-5" sec:authorize="hasRole('ADMIN')">
+        <div class="container">
+            <h2 class="text-center mb-5">Quản trị nhanh</h2>
+            <div class="row justify-content-center">
+                <div class="col-md-3 col-sm-6 mb-3">
+                    <a th:href="@{/books/add}" class="text-decoration-none">
+                        <div class="card text-center h-100 border-0 shadow-sm">
+                            <div class="card-body">
+                                <i class="bi bi-plus-circle-fill text-success mb-3" style="font-size: 2rem;"></i>
+                                <h5 class="card-title">Thêm sách</h5>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-3 col-sm-6 mb-3">
+                    <a th:href="@{/admin/users}" class="text-decoration-none">
+                        <div class="card text-center h-100 border-0 shadow-sm">
+                            <div class="card-body">
+                                <i class="bi bi-people-fill text-primary mb-3" style="font-size: 2rem;"></i>
+                                <h5 class="card-title">Quản lý user</h5>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-3 col-sm-6 mb-3">
+                    <a th:href="@{/admin}" class="text-decoration-none">
+                        <div class="card text-center h-100 border-0 shadow-sm">
+                            <div class="card-body">
+                                <i class="bi bi-speedometer2 text-warning mb-3" style="font-size: 2rem;"></i>
+                                <h5 class="card-title">Dashboard</h5>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-4 mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5><i class="bi bi-book"></i> Cửa hàng sách</h5>
+                    <p class="mb-0">Hệ thống quản lý cửa hàng sách với Spring Boot</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <p class="mb-0">© 2025 Bookstore Management System</p>
+                    <small>Được phát triển bằng Spring Boot & Thymeleaf</small>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
