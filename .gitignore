@@ -1,0 +1,29 @@
+# Compiled class files (Windows project)
+*.class
+bin/
+build/
+
+# IDE files
+.vscode/
+.idea/
+*.iml
+
+# Windows OS files
+Thumbs.db
+desktop.ini
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+*~
+
+# Log files
+*.log
+
+# Package files (keep source JARs in lib/)
+*.jar
+!lib/*.jar
+
+# Virtual machine crash logs
+hs_err_pid*

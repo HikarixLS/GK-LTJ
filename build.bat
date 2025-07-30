@@ -1,5 +1,5 @@
 @echo off
-title Bookstore Management - Build Script
+title Bookstore Management - Windows Only
 color 0B
 
 echo.
@@ -10,127 +10,95 @@ echo    ██║   ██╔══██╗██║   ██║██║██
 echo    ██║   ██████╔╝╚██████╔╝██║███████╗██████╔╝
 echo    ╚═╝   ╚═════╝  ╚═════╝ ╚═╝╚══════╝╚═════╝ 
 echo.
-echo    🏗️  BUILDING BOOKSTORE MANAGEMENT FOR WINDOWS
+echo    🏗️  BOOKSTORE MANAGEMENT - WINDOWS ONLY
 echo.
 echo ========================================================
 
-REM Kiểm tra Java
-echo [1/6] Kiểm tra môi trường Java...
+REM Check Java
+echo [1/3] Checking Java...
 java -version >nul 2>&1
 if %ERRORLEVEL% NEQ 0 (
-    echo ❌ Java không được tìm thấy! Vui lòng cài đặt Java JDK 11+
+    echo ❌ Java not found! Please install Java JDK 11+
     pause
     exit /b 1
 )
-echo ✅ Java environment OK
-
 javac -version >nul 2>&1
 if %ERRORLEVEL% NEQ 0 (
-    echo ❌ Java Compiler không có sẵn! Vui lòng cài đặt JDK (không chỉ JRE)
+    echo ❌ Java Compiler not found! Please install JDK
     pause
     exit /b 1
 )
-echo ✅ Java Compiler OK
+echo ✅ Java OK
 
-REM Kiểm tra MySQL JDBC Driver
-echo.
-echo [2/6] Kiểm tra dependencies...
+REM Check dependencies
+echo [2/4] Checking dependencies...
 if not exist "lib\mysql-connector-*.jar" (
-    echo ❌ MySQL JDBC Driver không tìm thấy trong lib\
-    echo 💡 Vui lòng tải từ: https://dev.mysql.com/downloads/connector/j/
+    echo ❌ MySQL JDBC Driver not found in lib\
     pause
     exit /b 1
 )
-echo ✅ MySQL JDBC Driver found
+echo ✅ MySQL JDBC Driver OK
 
-REM Dọn dẹp build cũ
-echo.
-echo [3/6] Dọn dẹp build cũ...
-if exist "build" (
-    rmdir /s /q "build" >nul 2>&1
-    echo ✅ Đã xóa build cũ
+REM Check XAMPP MySQL (optional for build)
+echo [3/4] Checking XAMPP MySQL Server...
+netstat -an | findstr :3306 >nul
+if %errorlevel% neq 0 (
+    echo ⚠️  MySQL Server not running (will be needed to run app)
+    echo 💡 Remember to start XAMPP MySQL before running the app
+) else (
+    echo ✅ MySQL Server is running on port 3306
 )
 
-REM Tạo thư mục build
-echo.
-echo [4/6] Tạo cấu trúc build...
+REM Clean and build
+echo [4/4] Building...
+if exist "bin" rmdir /s /q "bin" >nul 2>&1
+if exist "build" rmdir /s /q "build" >nul 2>&1
+
+mkdir bin >nul 2>&1
 mkdir build >nul 2>&1
-mkdir build\classes >nul 2>&1
 mkdir build\lib >nul 2>&1
-echo ✅ Đã tạo thư mục build
 
-REM Biên dịch Java files
-echo.
-echo [5/6] Biên dịch source code...
-echo ⚙️  Compiling Java classes...
-
-javac -cp "lib\*" -d build\classes -sourcepath src\main\java ^
-    src\main\java\*.java ^
-    src\main\java\model\*.java ^
-    src\main\java\dao\*.java ^
-    src\main\java\service\*.java ^
-    src\main\java\gui\*.java
+echo Compiling Java sources to bin\...
+javac -encoding UTF-8 -cp "lib\*" -d bin -sourcepath src\main\java src\main\java\*.java src\main\java\model\*.java src\main\java\dao\*.java src\main\java\service\*.java src\main\java\gui\*.java
 
 if %ERRORLEVEL% NEQ 0 (
-    echo ❌ Compilation failed! Kiểm tra lại source code.
+    echo ❌ Compilation failed!
     pause
     exit /b 1
 )
-echo ✅ Compilation successful
 
 REM Copy resources
-echo ⚙️  Copying resources...
-if not exist "build\classes\database" mkdir build\classes\database
-copy "src\main\resources\database\*" "build\classes\database\" >nul 2>&1
-copy "src\main\resources\*.properties" "build\classes\" >nul 2>&1
+if exist "src\main\resources\database" (
+    if not exist "bin\database" mkdir bin\database
+    copy "src\main\resources\database\*" "bin\database\" >nul 2>&1
+)
+if exist "src\main\resources\*.properties" (
+    copy "src\main\resources\*.properties" "bin\" >nul 2>&1
+)
 
-if %ERRORLEVEL% NEQ 0 (
-    echo ⚠️  Warning: Một số resources có thể không được copy
+REM Create JAR
+cd bin
+if exist "..\MANIFEST.MF" (
+    jar cfm ..\build\bookstore-management.jar ..\MANIFEST.MF *
 ) else (
-    echo ✅ Resources copied successfully
+    jar cf ..\build\bookstore-management.jar *
 )
-
-REM Tạo JAR file
-echo.
-echo [6/6] Tạo executable JAR...
-cd build\classes
-jar cfm ..\bookstore-management.jar ..\..\MANIFEST.MF * 
-
-if %ERRORLEVEL% NEQ 0 (
-    echo ❌ Failed to create JAR file!
-    cd ..\..
-    pause
-    exit /b 1
-)
-cd ..\..
-echo ✅ JAR file created
-
-REM Copy dependencies
-echo ⚙️  Copying dependencies...
+cd ..
 copy "lib\*" "build\lib\" >nul 2>&1
-echo ✅ Dependencies copied
 
 echo.
-echo ========================================================
-echo ✅ BUILD COMPLETED SUCCESSFULLY!
-echo ========================================================
+echo ✅ BUILD COMPLETED!
+echo    📂 bin\ - Compiled classes (ready to run)
+echo    📄 build\bookstore-management.jar - JAR file
 echo.
-echo 📦 Build artifacts:
-echo    📄 build\bookstore-management.jar  - Main application
-echo    📂 build\classes\                  - Compiled classes  
-echo    📂 build\lib\                      - Dependencies
-echo.
-echo 🚀 Cách chạy:
-echo    👉 run.bat                         - Quick run
-echo    👉 java -cp "build\classes;lib\*" BookstoreApp
-echo    👉 java -jar "build\bookstore-management.jar"
-echo.
+echo 💡 To run: Make sure XAMPP MySQL is running first!
 
-set /p run_choice="Bạn có muốn chạy ứng dụng ngay? (y/n): "
-if /i "%run_choice%"=="y" (
+set /p choice="Run application now? (y/n): "
+if /i "%choice%"=="y" (
     echo.
     echo 🚀 Starting Bookstore Management...
-    java -cp "build\bookstore-management.jar;build\lib\*" BookstoreApp
+    echo 🔗 Connecting to XAMPP MySQL localhost:3306
+    java -cp "bin;lib\*" BookstoreApp
 )
 
 echo.

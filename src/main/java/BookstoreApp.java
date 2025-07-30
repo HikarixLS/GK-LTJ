@@ -20,7 +20,7 @@ public class BookstoreApp {
         } catch (Exception e) {
             try {
                 // Fallback về System LAF
-                UIManager.setLookAndFeel(UIManager.getSystemLookAndFeel());
+                UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
