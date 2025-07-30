@@ -44,12 +44,12 @@ public class MainFrame extends JFrame {
         
         // Panel quản lý sách
         bookPanel = new BookManagementPanel(currentUser);
-        tabbedPane.addTab("📚 Quản lý Sách", bookPanel);
+        tabbedPane.addTab("Quản lý Sách", bookPanel);
         
         // Panel quản lý người dùng (chỉ admin)
         if (currentUser.getRole() == UserRole.ADMIN) {
             userPanel = new UserManagementPanel(currentUser);
-            tabbedPane.addTab("👥 Quản lý Người dùng", userPanel);
+            tabbedPane.addTab("Quản lý Người dùng", userPanel);
         }
     }
     
@@ -74,7 +74,7 @@ public class MainFrame extends JFrame {
         panel.setBorder(BorderFactory.createEmptyBorder(10, 15, 10, 15));
         
         // Logo và tiêu đề
-        JLabel lblTitle = new JLabel("📚 HỆ THỐNG QUẢN LÝ CỬA HÀNG SÁCH");
+        JLabel lblTitle = new JLabel("HỆ THỐNG QUẢN LÝ CỬA HÀNG SÁCH");
         lblTitle.setFont(new Font("Segoe UI", Font.BOLD, 20));
         lblTitle.setForeground(Color.WHITE);
         

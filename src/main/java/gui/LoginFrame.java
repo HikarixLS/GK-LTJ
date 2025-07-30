@@ -73,34 +73,26 @@ public class LoginFrame extends JFrame {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         mainPanel.add(lblTitle, gbc);
         
-        // Icon hoặc logo (có thể thêm sau)
-        JLabel lblIcon = new JLabel("📚");
-        lblIcon.setFont(new Font("Segoe UI", Font.PLAIN, 48));
-        lblIcon.setHorizontalAlignment(SwingConstants.CENTER);
-        gbc.gridx = 0; gbc.gridy = 1;
-        gbc.gridwidth = 2;
-        mainPanel.add(lblIcon, gbc);
-        
         // Username
         JLabel lblUsername = new JLabel("Tên đăng nhập:");
         lblUsername.setFont(new Font("Segoe UI", Font.BOLD, 14));
-        gbc.gridx = 0; gbc.gridy = 2;
+        gbc.gridx = 0; gbc.gridy = 1;
         gbc.gridwidth = 1;
         gbc.anchor = GridBagConstraints.WEST;
         mainPanel.add(lblUsername, gbc);
         
-        gbc.gridx = 1; gbc.gridy = 2;
+        gbc.gridx = 1; gbc.gridy = 1;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         mainPanel.add(txtUsername, gbc);
         
         // Password
         JLabel lblPassword = new JLabel("Mật khẩu:");
         lblPassword.setFont(new Font("Segoe UI", Font.BOLD, 14));
-        gbc.gridx = 0; gbc.gridy = 3;
+        gbc.gridx = 0; gbc.gridy = 2;
         gbc.anchor = GridBagConstraints.WEST;
         mainPanel.add(lblPassword, gbc);
         
-        gbc.gridx = 1; gbc.gridy = 3;
+        gbc.gridx = 1; gbc.gridy = 2;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         mainPanel.add(txtPassword, gbc);
         
@@ -110,7 +102,7 @@ public class LoginFrame extends JFrame {
         buttonPanel.add(btnLogin);
         buttonPanel.add(btnExit);
         
-        gbc.gridx = 0; gbc.gridy = 4;
+        gbc.gridx = 0; gbc.gridy = 3;
         gbc.gridwidth = 2;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(20, 10, 10, 10);
@@ -125,7 +117,8 @@ public class LoginFrame extends JFrame {
         
         JLabel lblInfo = new JLabel("<html><center><b>Tài khoản demo:</b><br>" +
                 "Admin: admin/admin123<br>" +
-                "User: user/user123</center></html>");
+                "User: user/user123<br>" +
+                "Manager: manager/manager123</center></html>");
         lblInfo.setFont(new Font("Segoe UI", Font.PLAIN, 12));
         lblInfo.setForeground(new Color(108, 117, 125));
         infoPanel.add(lblInfo);
@@ -192,40 +185,31 @@ public class LoginFrame extends JFrame {
         btnLogin.setEnabled(false);
         btnLogin.setText("Đang xử lý...");
         
-        // Xác thực trong thread riêng để không block UI
-        SwingWorker<User, Void> worker = new SwingWorker<User, Void>() {
-            @Override
-            protected User doInBackground() throws Exception {
-                return userService.authenticate(username, password);
-            }
+        try {
+            User user = userService.authenticate(username, password);
             
-            @Override
-            protected void done() {
-                try {
-                    User user = get();
-                    
-                    if (user != null) {
-                        // Đăng nhập thành công
-                        dispose();
-                        SwingUtilities.invokeLater(() -> {
-                            new MainFrame(user).setVisible(true);
-                        });
-                    } else {
-                        showError("Tên đăng nhập hoặc mật khẩu không đúng!");
-                        txtPassword.setText("");
-                        txtUsername.requestFocus();
-                    }
-                } catch (Exception e) {
-                    showError("Lỗi kết nối cơ sở dữ liệu!");
-                    e.printStackTrace();
-                } finally {
-                    btnLogin.setEnabled(true);
-                    btnLogin.setText("Đăng nhập");
-                }
+            if (user != null) {
+                // Đăng nhập thành công
+                JOptionPane.showMessageDialog(this, 
+                    "Đăng nhập thành công!\nChào mừng " + user.getFullName(), 
+                    "Thành công", 
+                    JOptionPane.INFORMATION_MESSAGE);
+                dispose();
+                SwingUtilities.invokeLater(() -> {
+                    new MainFrame(user).setVisible(true);
+                });
+            } else {
+                showError("Tên đăng nhập hoặc mật khẩu không đúng!");
+                txtPassword.setText("");
+                txtUsername.requestFocus();
             }
-        };
-        
-        worker.execute();
+        } catch (Exception e) {
+            showError("Lỗi kết nối cơ sở dữ liệu!\n" + e.getMessage());
+            e.printStackTrace();
+        } finally {
+            btnLogin.setEnabled(true);
+            btnLogin.setText("Đăng nhập");
+        }
     }
     
     private void showError(String message) {

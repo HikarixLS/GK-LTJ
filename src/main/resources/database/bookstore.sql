@@ -45,10 +45,10 @@ CREATE TABLE categories (
 
 -- Chèn dữ liệu mẫu cho users
 INSERT INTO users (username, password, full_name, email, phone, role, is_active) VALUES
--- Mật khẩu được hash SHA-256
-('admin', 'c7ad44cbad762a5da0a452f9e854fdc1e0e7a52a38015f23f3eab1d80b931dd472634dfac71cd34ebc35d16ab7fb8a90c81f975113d6c7538dc69dd8de9077ec', 'Quản trị viên', 'admin@bookstore.com', '0123456789', 'ADMIN', TRUE),
-('user', '0a041b9462caa4a31bac3567e0b6e6fd9100787db2ab433d96f6d178cabfce90', 'Người dùng', 'user@bookstore.com', '0987654321', 'USER', TRUE),
-('manager', 'b109f3bbbc244eb82441917ed06d618b9008dd09b3befd1b5e07394c706a8bb980b1d7785e5976ec049b46df5f1326af5a2ea6d103fd07c95385ffab0cacbc86', 'Quản lý', 'manager@bookstore.com', '0111222333', 'EMPLOYEE', TRUE);
+-- Mật khẩu đơn giản (không hash)
+('admin', 'admin123', 'Quản trị viên', 'admin@bookstore.com', '0123456789', 'ADMIN', TRUE),
+('user', 'user123', 'Người dùng', 'user@bookstore.com', '0987654321', 'USER', TRUE),
+('manager', 'manager123', 'Quản lý', 'manager@bookstore.com', '0111222333', 'EMPLOYEE', TRUE);
 
 -- Chèn dữ liệu mẫu cho categories
 INSERT INTO categories (category_name, description) VALUES

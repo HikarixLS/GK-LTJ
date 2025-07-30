@@ -87,10 +87,10 @@ public class BookManagementPanel extends JPanel {
         cmbCategory.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         
         // Tạo buttons
-        btnAdd = new JButton("➕ Thêm");
-        btnEdit = new JButton("✏️ Sửa");
-        btnDelete = new JButton("🗑️ Xóa");
-        btnRefresh = new JButton("🔄 Làm mới");
+        btnAdd = new JButton("Thêm");
+        btnEdit = new JButton("Sửa");
+        btnDelete = new JButton("Xóa");
+        btnRefresh = new JButton("Làm mới");
         
         // Thiết lập font và màu cho buttons
         Font buttonFont = new Font("Segoe UI", Font.PLAIN, 14);

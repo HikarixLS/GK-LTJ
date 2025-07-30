@@ -36,9 +36,8 @@ public class UserService {
             return null;
         }
         
-        // Hash password trước khi so sánh (trong thực tế)
-        String hashedPassword = hashPassword(password);
-        return userDAO.authenticate(username, hashedPassword);
+        // Sử dụng mật khẩu gốc (không hash) để đơn giản
+        return userDAO.authenticate(username, password);
     }
     
     /**
@@ -55,9 +54,7 @@ public class UserService {
             return false;
         }
         
-        // Hash password
-        user.setPassword(hashPassword(user.getPassword()));
-        
+        // Không hash password để đơn giản
         return userDAO.addUser(user);
     }
     
@@ -69,11 +66,7 @@ public class UserService {
             return false;
         }
         
-        // Hash password nếu được thay đổi
-        if (user.getPassword() != null && !user.getPassword().isEmpty()) {
-            user.setPassword(hashPassword(user.getPassword()));
-        }
-        
+        // Không hash password để đơn giản
         return userDAO.updateUser(user);
     }
     
@@ -136,8 +129,8 @@ public class UserService {
             return false;
         }
         
-        // Kiểm tra mật khẩu cũ
-        if (!user.getPassword().equals(hashPassword(oldPassword))) {
+        // Kiểm tra mật khẩu cũ (không hash)
+        if (!user.getPassword().equals(oldPassword)) {
             System.err.println("Mật khẩu cũ không đúng");
             return false;
         }
@@ -147,7 +140,8 @@ public class UserService {
             return false;
         }
         
-        user.setPassword(hashPassword(newPassword));
+        // Không hash password để đơn giản
+        user.setPassword(newPassword);
         return userDAO.updateUser(user);
     }
     
