@@ -3,8 +3,6 @@ package service;
 import dao.UserDAO;
 import model.User;
 import model.User.UserRole;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -205,25 +203,6 @@ public class UserService {
             return false;
         }
         return true;
-    }
-    
-    /**
-     * Hash password bằng SHA-256
-     */
-    private String hashPassword(String password) {
-        try {
-            MessageDigest md = MessageDigest.getInstance("SHA-256");
-            byte[] hashedBytes = md.digest(password.getBytes());
-            
-            StringBuilder sb = new StringBuilder();
-            for (byte b : hashedBytes) {
-                sb.append(String.format("%02x", b));
-            }
-            return sb.toString();
-        } catch (NoSuchAlgorithmException e) {
-            System.err.println("Lỗi khi hash password: " + e.getMessage());
-            return password; // Fallback - không nên dùng trong production
-        }
     }
     
     /**

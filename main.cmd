@@ -11,142 +11,16 @@ echo    ██║   ██╔══██╗██║   ██║██║██
 echo    ██║   ██████╔╝╚██████╔╝██║███████╗██████╔╝
 echo    ╚═╝   ╚═════╝  ╚═════╝ ╚═╝╚══════╝╚═════╝ 
 echo.
-echo    🏗️  BOOKSTORE MANAGEMENT - WINDOWS ONLY
+echo    BOOKSTORE MANAGEMENT - WINDOWS ONLY
 echo.
 echo ========================================================
 
-:MENU
-echo.
-echo ===== MAIN MENU =====
-echo 1. Check System
-echo 2. Setup Database  
-echo 3. Build and Run
-echo 4. Quick Run (if already built)
-echo 5. Exit
-echo.
-set /p "choice=Choose option (1-5): "
-
-if "%choice%"=="1" goto CHECK
-if "%choice%"=="2" goto SETUP
-if "%choice%"=="3" goto BUILD
-if "%choice%"=="4" goto QUICKRUN
-if "%choice%"=="5" goto END
-echo ❌ Invalid choice!
-pause
-goto MENU
-
-:CHECK
-echo.
-echo [1/4] Checking Java...
-java -version >nul 2>&1
-if %ERRORLEVEL% NEQ 0 (
-    echo ❌ Java not found! Please install Java JDK 11+
-    pause
-    goto MENU
-)
-javac -version >nul 2>&1
-if %ERRORLEVEL% NEQ 0 (
-    echo ❌ Java Compiler not found! Please install JDK
-    pause
-    goto MENU
-)
-echo ✅ Java OK
-java -version
-
-echo.
-echo [2/4] Checking dependencies...
-if not exist "lib\mysql-connector-*.jar" (
-    echo ❌ MySQL JDBC Driver not found in lib\
-    pause
-    goto MENU
-)
-echo ✅ MySQL JDBC Driver OK
-
-echo.
-echo [3/4] Checking project files...
-if exist "src\main\java\BookstoreApp.java" (
-    echo ✅ Main Java file found
-) else (
-    echo ❌ Main Java file missing
-)
-
-echo.
-echo [4/4] Checking XAMPP MySQL Server...
-netstat -an | findstr :3306 >nul
-if %errorlevel% neq 0 (
-    echo ⚠️  MySQL Server not running (will be needed to run app)
-    echo 💡 Remember to start XAMPP MySQL before running the app
-) else (
-    echo ✅ MySQL Server is running on port 3306
-)
-echo.
-pause
-goto MENU
-
-:SETUP
-echo.
-echo 🗄️  Setting up database...
-echo.
-echo Checking for XAMPP...
-set XAMPP_PATH=
-if exist "C:\xampp\mysql\bin\mysql.exe" set XAMPP_PATH=C:\xampp
-if exist "C:\Program Files\XAMPP\mysql\bin\mysql.exe" set XAMPP_PATH=C:\Program Files\XAMPP
-if exist "d:\soft\xampp\xp\mysql\bin\mysql.exe" set XAMPP_PATH=d:\soft\xampp\xp
-if exist "D:\xampp\mysql\bin\mysql.exe" set XAMPP_PATH=D:\xampp
-if exist "E:\xampp\mysql\bin\mysql.exe" set XAMPP_PATH=E:\xampp
-
-if "%XAMPP_PATH%"=="" (
-    echo ❌ XAMPP not found!
-    echo Please install XAMPP and try again.
-    echo.
-    echo 💡 Alternative: Use phpMyAdmin manually:
-    echo    1. Open http://localhost/phpmyadmin
-    echo    2. Create database: bookstore
-    echo    3. Import: src\main\resources\database\bookstore.sql
-    pause
-    goto MENU
-)
-
-echo ✅ XAMPP found at: %XAMPP_PATH%
-echo.
-echo Starting XAMPP Control Panel...
-start "" "%XAMPP_PATH%\xampp-control.exe"
-echo.
-echo Please start MySQL service in XAMPP Control Panel
-echo Then press any key to continue...
-pause
-
-echo.
-echo Creating database...
-"%XAMPP_PATH%\mysql\bin\mysql.exe" -u root -e "CREATE DATABASE IF NOT EXISTS bookstore;"
-if errorlevel 1 (
-    echo ❌ Failed to create database!
-    echo Please make sure MySQL is running.
-) else (
-    echo ✅ Database 'bookstore' created successfully!
-    if exist "src\main\resources\database\bookstore.sql" (
-        echo Importing database schema...
-        "%XAMPP_PATH%\mysql\bin\mysql.exe" -u root bookstore < "src\main\resources\database\bookstore.sql"
-        if errorlevel 1 (
-            echo ⚠️  Failed to import schema
-        ) else (
-            echo ✅ Database schema imported!
-            echo.
-            echo 🎯 Default accounts created:
-            echo    admin/admin123 - Administrator
-            echo    user/user123 - User  
-            echo    manager/manager123 - Manager
-        )
-    )
-)
-echo.
-echo 🔗 phpMyAdmin: http://localhost/phpmyadmin
-pause
-goto MENU
+REM Auto build and run
+goto BUILD
 
 :BUILD
 echo.
-echo 🔥 Building and running project...
+echo Building and running project...
 
 REM Check Java first
 echo [1/4] Checking Java...
@@ -154,13 +28,13 @@ java -version >nul 2>&1
 if %ERRORLEVEL% NEQ 0 (
     echo ❌ Java not found! Please install Java JDK 11+
     pause
-    goto MENU
+    exit /b 1
 )
 javac -version >nul 2>&1
 if %ERRORLEVEL% NEQ 0 (
     echo ❌ Java Compiler not found! Please install JDK
     pause
-    goto MENU
+    exit /b 1
 )
 echo ✅ Java OK
 
@@ -169,7 +43,7 @@ echo [2/4] Checking dependencies...
 if not exist "lib\mysql-connector-*.jar" (
     echo ❌ MySQL JDBC Driver not found in lib\
     pause
-    goto MENU
+    exit /b 1
 )
 echo ✅ MySQL JDBC Driver OK
 
@@ -180,7 +54,7 @@ if %errorlevel% neq 0 (
     echo ⚠️  MySQL Server not running!
     echo 💡 Please start XAMPP MySQL first
     set /p choice="Continue anyway? (y/n): "
-    if /i not "%choice%"=="y" goto MENU
+    if /i not "%choice%"=="y" exit /b 1
 )
 
 REM Clean and build
@@ -198,7 +72,7 @@ javac -encoding UTF-8 -cp "lib\*" -d bin -sourcepath src\main\java src\main\java
 if %ERRORLEVEL% NEQ 0 (
     echo ❌ Compilation failed!
     pause
-    goto MENU
+    exit /b 1
 )
 
 REM Copy resources
@@ -221,57 +95,15 @@ cd ..
 copy "lib\*" "build\lib\" >nul 2>&1
 
 echo.
-echo ✅ BUILD COMPLETED!
+echo BUILD COMPLETED!
 echo    📂 bin\ - Compiled classes (ready to run)
 echo    📄 build\bookstore-management.jar - JAR file
 echo.
 
-echo 🚀 Starting Bookstore Management...
-echo 🔗 Connecting to XAMPP MySQL localhost:3306
+echo Starting Bookstore Management...
+echo Connecting to XAMPP MySQL localhost:3306
 java -cp "bin;lib\*" BookstoreApp
 
 pause
-goto MENU
-
-:QUICKRUN
-echo.
-echo 🚀 Quick Run (using existing build)...
-
-REM Check if bin directory exists
-if not exist "bin" (
-    echo ❌ No compiled classes found! Please build first (option 3)
-    pause
-    goto MENU
-)
-
-REM Check if main class exists
-if not exist "bin\BookstoreApp.class" (
-    echo ❌ Main class not found! Please build first (option 3)
-    pause
-    goto MENU
-)
-
-REM Check MySQL
-echo Checking XAMPP MySQL Server...
-netstat -an | findstr :3306 >nul
-if %errorlevel% neq 0 (
-    echo ⚠️  MySQL Server not running!
-    echo 💡 Please start XAMPP MySQL first
-    set /p choice="Continue anyway? (y/n): "
-    if /i not "%choice%"=="y" goto MENU
-) else (
-    echo ✅ MySQL Server is running on port 3306
-)
-
-echo.
-echo 🚀 Starting Bookstore Management...
-echo 🔗 Connecting to XAMPP MySQL localhost:3306
-java -cp "bin;lib\*" BookstoreApp
-
-pause
-goto MENU
-
-:END
-echo.
-echo 👋 Goodbye!
 exit
+

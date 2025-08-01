@@ -108,14 +108,22 @@ public class BookManagementPanel extends JPanel {
         btnRefresh.setBackground(new Color(23, 162, 184));
         btnRefresh.setForeground(Color.WHITE);
         
-        // Disable một số button nếu không phải admin
-        if (currentUser.getRole() != UserRole.ADMIN) {
+        // Disable một số button nếu không có quyền
+        if (!hasManagePermission()) {
             btnAdd.setEnabled(false);
             btnEdit.setEnabled(false);
             btnDelete.setEnabled(false);
         }
         
         updateButtonStates();
+    }
+    
+    /**
+     * Kiểm tra xem user hiện tại có quyền quản lý sách không
+     */
+    private boolean hasManagePermission() {
+        UserRole role = currentUser.getRole();
+        return role == UserRole.ADMIN || role == UserRole.EMPLOYEE;
     }
     
     private void setupLayout() {
@@ -181,7 +189,7 @@ public class BookManagementPanel extends JPanel {
         bookTable.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if (e.getClickCount() == 2 && currentUser.getRole() == UserRole.ADMIN) {
+                if (e.getClickCount() == 2 && hasManagePermission()) {
                     editBook();
                 }
             }
@@ -373,9 +381,9 @@ public class BookManagementPanel extends JPanel {
     
     private void updateButtonStates() {
         boolean hasSelection = bookTable.getSelectedRow() != -1;
-        boolean isAdmin = currentUser.getRole() == UserRole.ADMIN;
+        boolean hasPermission = hasManagePermission();
         
-        btnEdit.setEnabled(hasSelection && isAdmin);
-        btnDelete.setEnabled(hasSelection && isAdmin);
+        btnEdit.setEnabled(hasSelection && hasPermission);
+        btnDelete.setEnabled(hasSelection && hasPermission);
     }
 }

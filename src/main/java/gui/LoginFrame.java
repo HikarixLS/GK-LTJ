@@ -116,9 +116,9 @@ public class LoginFrame extends JFrame {
         infoPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         
         JLabel lblInfo = new JLabel("<html><center><b>Tài khoản demo:</b><br>" +
-                "Admin: admin/admin123<br>" +
-                "User: user/user123<br>" +
-                "Manager: manager/manager123</center></html>");
+                "Admin: admin/admin123 (full access)<br>" +
+                "User: user/user123 (read-only)<br>" +
+                "Employee: manager/manager123 (can manage books)</center></html>");
         lblInfo.setFont(new Font("Segoe UI", Font.PLAIN, 12));
         lblInfo.setForeground(new Color(108, 117, 125));
         infoPanel.add(lblInfo);
