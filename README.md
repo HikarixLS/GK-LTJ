@@ -3,11 +3,12 @@
 ## 📖 Mô tả dự án
 
 Ứng dụng Java Swing chạy hoàn toàn trên **Windows** để quản lý cửa hàng sách với các chức năng:
-- 📚 Quản lý sách (CRUD) với giao diện đẹp
-- 👥 Quản lý người dùng và phân quyền 
+- 📚 Quản lý sách (CRUD) với giao diện sạch sẽ
+- 👥 Quản lý người dùng và phân quyền EMPLOYEE
 - 🔍 Tìm kiếm và lọc dữ liệu thông minh
-- 🎨 Giao diện GUI Swing chuyên nghiệp
-- 🗄️ Kết nối MySQL với validation đầy đủ
+- 🎨 Giao diện GUI Swing đơn giản, không rườm rà
+- 🗄️ Kết nối MySQL với XAMPP
+- 🚀 Auto-run một lệnh duy nhất
 
 ## 🖥️ Môi trường Windows
 
@@ -19,11 +20,7 @@
 - **Disk**: 1GB trống cho ứng dụng và database
 
 ### Các script Windows được cung cấp:
-- 🔧 **`install-windows.ps1`** - Cài đặt tự động dependencies (PowerShell)
-- ✅ **`check-system.bat`** - Kiểm tra hệ thống và dependencies
-- ⚙️ **`setup.bat`** - Setup database và build ứng dụng  
-- 🏗️ **`build.bat`** - Build dự án và tạo JAR
-- 🚀 **`run.bat`** - Chạy ứng dụng
+- � **`main.cmd`** - Chạy ứng dụng trực tiếp (auto-build và start)
 
 ## 🚀 Công nghệ sử dụng
 
@@ -70,11 +67,28 @@ src/
 
 ### 🎯 CÁCH NHANH NHẤT - Chạy ngay!
 
-**👉 Double-click vào file: `start-here.bat`** 
+**👉 Double-click vào file: `main.cmd`** 
 
-File này sẽ hướng dẫn bạn từng bước một cách tự động!
+File này sẽ tự động:
+- ✅ Kiểm tra Java và dependencies
+- ✅ Build dự án 
+- ✅ Khởi chạy ứng dụng
+- ✅ Không cần menu - chạy trực tiếp!
 
-### 🤖 Cách 1: Cài đặt tự động (Khuyến nghị cho người mới)
+### 📋 Yêu cầu trước khi chạy:
+1. **Java JDK 11+** đã cài đặt
+2. **XAMPP MySQL** đang chạy trên port 3306  
+3. **Database bookstore** đã được tạo và import
+
+### 🛠️ Setup Database lần đầu:
+```cmd
+# Tạo database trong XAMPP phpMyAdmin
+# 1. Mở http://localhost/phpmyadmin
+# 2. Tạo database tên: bookstore
+# 3. Import file: src\main\resources\database\bookstore.sql
+```
+
+### 📋 Setup thủ công (nếu cần):
 
 1. **Mở PowerShell as Administrator** (Nhấn Win + X → chọn "Windows PowerShell (Admin)")
 2. **Cho phép chạy script:**
@@ -125,11 +139,8 @@ exit
 # Import data
 mysql -u root -p bookstore < "src\main\resources\database\bookstore.sql"
 
-# Build
-build.bat
-
-# Run
-run.bat
+# Chạy ứng dụng
+main.cmd
 ```
 
 ## 👥 Tài khoản Demo
@@ -138,7 +149,7 @@ run.bat
 |----------|----------|---------|--------|
 | admin | admin123 | Admin | Toàn quyền quản lý |
 | user | user123 | User | Chỉ xem thông tin |
-| manager | manager123 | Employee | Nhân viên |
+| manager | manager123 | Employee | Quản lý sách (thêm/sửa/xóa) |
 
 ## 🔧 Tính năng chính
 
@@ -149,11 +160,12 @@ run.bat
 
 ### 2. Quản lý Sách
 - ✅ Thêm sách mới
-- ✅ Cập nhật thông tin sách
+- ✅ Cập nhật thông tin sách  
 - ✅ Xóa sách
 - ✅ Tìm kiếm theo tên, tác giả, ISBN
 - ✅ Lọc theo danh mục
 - ✅ Hiển thị thống kê
+- ✅ EMPLOYEE có đầy đủ quyền quản lý sách
 
 ### 3. Quản lý Người dùng (Admin)
 - ✅ Thêm người dùng mới
@@ -162,10 +174,11 @@ run.bat
 - ✅ Phân quyền vai trò
 
 ### 4. Giao diện GUI
-- ✅ Thiết kế thân thiện, dễ sử dụng
+- ✅ Thiết kế sạch sẽ, không icon rườm rà
 - ✅ Responsive layout
 - ✅ Validation dữ liệu
 - ✅ Thông báo lỗi rõ ràng
+- ✅ Authentication đơn giản với plain text
 
 ## 📊 Database Schema
 
@@ -202,10 +215,11 @@ category_id (PK) | category_name | description | created_at
 
 ### Version 1.0.0
 - ✅ Quản lý sách cơ bản (CRUD)
-- ✅ Hệ thống đăng nhập
-- ✅ Phân quyền người dùng
+- ✅ Hệ thống đăng nhập (plain text authentication)
+- ✅ Phân quyền người dùng (EMPLOYEE có quyền quản lý sách)
 - ✅ Tìm kiếm và lọc dữ liệu
-- ✅ Giao diện Swing
+- ✅ Giao diện Swing sạch sẽ (loại bỏ emoji/icon)
+- ✅ Auto-run với main.cmd (không cần menu)
 
 ### Các tính năng sắp có
 - 📋 Quản lý đơn hàng
